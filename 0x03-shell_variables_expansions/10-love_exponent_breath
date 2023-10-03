@@ -1,2 +1,2 @@
 #!/bin/bash
-echo $(( $BREATH ** L))
+echo $(($BREATH ** $LOVE))
