@@ -1,10 +1,13 @@
 #!/usr/bin/env bash
-# Indefinitely writes "I am alive!" to a file
+#
+# Indefinitely write text to tmpfile (default '/tmp/my_process')
 
-NAME=/tmp/my_process
-sudo touch $NAME
+sleep() {
+  ! read -rt "$1"
+} <> <(:)
 
-while true; do
-    sudo bash -c "echo \"I am alive!\" >> $NAME"
-    sleep 2
-done
+while true
+do
+  echo 'I am alive!'
+  sleep 2
+done > "${TMPDIR:-/tmp}/my_process"

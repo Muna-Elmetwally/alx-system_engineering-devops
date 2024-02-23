@@ -1,30 +1,30 @@
 #!/usr/bin/env bash
-# Manages the program called manage_my_process
+#
+# To infinity and beyond...
+# Write PID to pidfile (default '/var/run/holbertonscript.pid')
+# Remove pidfile and exit upon receiving SIGTERM or SIGQUIT
 
-FILE="/var/run/my_process.pid"
+sleep() {
+  ! read -rt "$1"
+} <> <(:)
 
-create()
-{
-    sudo touch $FILE
-    sudo bash -c "echo $$ > $FILE"
-}
+echo "$$" >| "${pidfile:=/var/run/holbertonscript.pid}"
 
-if [ "$1" == "start" ]; then
-    create
-    ./manage_my_process &
-    echo "manage_my_process started"
+trap '
+  echo "Y U no love me?!"
+' INT
+trap '
+  rm -f "${pidfile}" 2>/dev/null
+  exit 131
+' QUIT
+trap '
+  echo "I hate the kill command"
+  rm -f "${pidfile}" 2>/dev/null
+  exit 143
+' TERM
 
-elif [ "$1" == "stop" ]
-then
-    [ -e "/var/run/my_process.pid" ] && sudo pkill -f "./manage_my_process" && rm /var/run/my_process.pid
-    echo "manage_my_process stopped"
-
-elif [ "$1" == "restart" ]
-then
-    $0 stop >& /dev/null
-    $0 start >& /dev/null
-    echo "manage_my_process restarted"
-
-else
-    echo "Usage: manage_my_process {start|stop|restart}"
-fi
+while true
+do
+  echo 'To infinity and beyond'
+  sleep 2
+done
