@@ -24,4 +24,4 @@ if ! grep -q "error_page 404 /error_404.html;" /etc/nginx/sites-available/defaul
 fi 
 
 # restart nginx after implementing changes
-service nginx start
+service nginx start
