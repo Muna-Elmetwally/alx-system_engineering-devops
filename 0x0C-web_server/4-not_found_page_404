@@ -12,14 +12,16 @@ echo "Hello World!" | sudo tee /var/www/html/index.html
 new_string="server_name _;\n\trewrite ^\/redirect_me https:\/\/github.com\/besthor permanent;"
 sudo sed -i "s/server_name _;/$new_string/" /etc/nginx/sites-enabled/default
 
+echo "Ceci n'est pas une page" >> /var/www/html/error_404.html
 # Creating a 404 Custom error page
-echo "Ceci n'est pas une page" | sudo tee /var/www/html/404.html
-new_string="listen 80 default_server;\n\terror_page 404 \/404.html;\n\tlocation = \/404.html {\n\t\troot \/var\/www\/html;\n\t\tinternal;\n\t}"
-
-sudo sed -i "s/listen 80 default_server;/$new_string/" /etc/nginx/sites-enabled/default
-
-# Testing configurations for syntax errors
-sudo nginx -t
+if ! grep -q "error_page 404 /error_404.html;" /etc/nginx/sites-available/default; then
+  # Modify the Nginx default server configuration
+  sudo sed -i '/server_name _;/a \
+          error_page 404 /error_404.html;\n \
+          location = /error_404.html {\n \
+              root /var/www/html;\n \
+          }\n' /etc/nginx/sites-available/default
+fi 
 
 # restart nginx after implementing changes
-sudo service nginx restart
+service nginx start
