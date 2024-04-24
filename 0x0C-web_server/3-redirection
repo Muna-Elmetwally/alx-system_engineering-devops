@@ -6,11 +6,10 @@ sudo apt-get update
 sudo apt-get install -y nginx
 
 # Creating an index.html page
-echo "Hello World!" | sudo tee /var/www/html/index.html
+echo "Hello World!" > /var/www/html/index.nginx-debian.html
 
 # Performing a 301 Redirection
-string_for_replacement="server_name _;\n\trewrite ^\/redirect_me https:\/\/github.com\/besthor permanent;"
-sudo sed -i "s/server_name _;/$string_for_replacement/" /etc/nginx/sites-enabled/default
+sudo sed -i "/server_name _;/a \    location /redirect_me {\n        return 301 https://www.youtube.com/watch?v=QH2-TGUlwu4;\n    }" /etc/nginx/sites-available/default
 
 # Restarting Nginx service
-sudo service nginx restart
+service nginx start
