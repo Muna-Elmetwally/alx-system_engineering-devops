@@ -8,7 +8,7 @@ global
         group haproxy
         daemon
 
-        # Setting up SSL from tutorial
+        # Setting up SSL from tutorial 
         # https://www.digitalocean.com/community/tutorials/how-to-secure-haproxy-with-let-s-encrypt-on-ubuntu-14-04
         maxconn 2048
         tune.ssl.default-dh-param 2048
